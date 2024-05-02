@@ -96,7 +96,6 @@ class APIMethod:
             files = None
 
         url = mount_url(self.base_api.baseurl, self.sub_url, params)
-        print(url)
         self.latest_result = request(
             self.method_type,
             url,
