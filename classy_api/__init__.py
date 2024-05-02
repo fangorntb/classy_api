@@ -1,1 +1,1 @@
-from .api import BaseAPI, get, post, put, delete, patch
+from .api import put, post, get, delete, patch, BaseAPI
