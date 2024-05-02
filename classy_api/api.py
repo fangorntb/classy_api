@@ -53,21 +53,9 @@ class APIMethod:
 
     def __call__(
             self,
-            params: Any = None,
-            json: Any = None,
-            files: Any = None,
-            data: Any = None,
             *args,
             **kwargs,
     ):
-        def _is_serializeble(value):
-            return type(value) not in (dict, NoneType, list)
-
-        if _is_serializeble(params):
-            params = self.serialization.serialize(params)
-        if _is_serializeble(json):
-            json = self.serialization.serialize(json)
-
         dct = self.scope
         from_method = self.func(self.base_api, *args, **kwargs) or {}
         for k, v in from_method.items():
@@ -76,31 +64,16 @@ class APIMethod:
             if dct.get(param) is None:
                 dct[param] = {}
 
-        json = json or {}
-        json = json | dct['json']
-
-        files = files or {}
-        files = files | dct['files']
-
-        params = params or {k: v for k, v in kwargs.items() if is_params_type(v)}
-        data = data or {}
-        data = data | dct['data']
-
-        if not len(json):
-            json = None
-
-        if not len(data):
-            data = None
-
-        if not len(files):
-            files = None
-
+        json = dct['json']
+        files = dct['files']
+        data = dct['data']
+        params = dct['params']
         url = mount_url(self.base_api.baseurl, self.sub_url, params)
         self.latest_result = request(
             self.method_type,
             url,
             json=json,
-            params=params | dct['params'],
+            params=params,
             files=files,
             data=data,
             headers=self.base_api.headers | dct['headers'],
