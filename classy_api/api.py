@@ -5,7 +5,7 @@ from typing import Any
 
 from requests import request
 
-from serialization import BaseSerialization, AbstractSerialization
+from .serialization import BaseSerialization, AbstractSerialization
 
 
 class MethodEnum(Enum):
