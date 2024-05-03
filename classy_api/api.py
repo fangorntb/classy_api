@@ -54,4 +54,5 @@ class BaseAPI:
             headers=self.headers,
             data=self.data,
             files=self.files,
+            verify=False
         )
